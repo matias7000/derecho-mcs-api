@@ -1,0 +1,25 @@
+{
+  "schema_version": "v1",
+  "name_for_model": "derecho_chileno",
+  "name_for_human": "Derecho Chileno",
+  "description_for_model": "Devuelve información jurídica chilena desde fuentes oficiales como la Biblioteca del Congreso Nacional.",
+  "description_for_human": "Consulta leyes y jurisprudencia chilena desde sitios oficiales.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://derecho-mcs-api.onrender.com/openapi.json"
+  },
+  "contact_email": "matias@example.com"
+}
+from fastapi.openapi.utils import get_openapi
+
+@app.get("/openapi.json", include_in_schema=False)
+def custom_openapi():
+    return get_openapi(
+        title="Derecho Chileno",
+        version="1.0.0",
+        description="Consulta leyes y jurisprudencia chilena desde sitios oficiales.",
+        routes=app.routes,
+    )
