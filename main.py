@@ -40,4 +40,19 @@ import os
 @app.get("/.well-known/ai-plugin.json", include_in_schema=False)
 def serve_manifest():
     return FileResponse(os.path.join(".well-known", "ai-plugin.json"))
+from fastapi.responses import FileResponse
+import os
+
+@app.get("/.well-known/ai-plugin.json", include_in_schema=False)
+def serve_manifest():
+    return FileResponse(os.path.join(".well-known", "ai-plugin.json"))
+
+from fastapi.staticfiles import StaticFiles
+import os
+
+# Asegúrate de que el directorio exista
+os.makedirs(".well-known", exist_ok=True)
+
+# Montar la carpeta .well-known
+app.mount("/.well-known", StaticFiles(directory=".well-known"), name="static")
 
