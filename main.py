@@ -9,6 +9,7 @@ SITIOS_PERMITIDOS = [
     "https://www.bcn.cl",
     "https://www.bibliotecajuridica.cl",
     "https://www.leychile.cl"
+    "https://www.pjud.cl/biblioteca-poder-judicial"
 ]
 
 @app.get("/buscar")
@@ -27,3 +28,16 @@ def buscar_derecho_chileno(palabra: str):
             resultados.append({"sitio": sitio, "error": str(e)})
 
     return {"palabra_buscada": palabra, "resultados": resultados}
+from fastapi.responses import FileResponse
+import os
+
+@app.get("/.well-known/ai-plugin.json", include_in_schema=False)
+def serve_manifest():
+    return FileResponse(os.path.join(".well-known", "ai-plugin.json"))
+from fastapi.responses import FileResponse
+import os
+
+@app.get("/.well-known/ai-plugin.json", include_in_schema=False)
+def serve_manifest():
+    return FileResponse(os.path.join(".well-known", "ai-plugin.json"))
+
