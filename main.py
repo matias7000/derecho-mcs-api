@@ -1,6 +1,8 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 import requests
 from bs4 import BeautifulSoup
+import os
 
 app = FastAPI()
 
@@ -8,7 +10,7 @@ app = FastAPI()
 SITIOS_PERMITIDOS = [
     "https://www.bcn.cl",
     "https://www.bibliotecajuridica.cl",
-    "https://www.leychile.cl"
+    "https://www.leychile.cl",
     "https://www.pjud.cl/biblioteca-poder-judicial"
 ]
 
@@ -28,31 +30,15 @@ def buscar_derecho_chileno(palabra: str):
             resultados.append({"sitio": sitio, "error": str(e)})
 
     return {"palabra_buscada": palabra, "resultados": resultados}
-from fastapi.responses import FileResponse
-import os
 
-@app.get("/.well-known/ai-plugin.json", include_in_schema=False)
-def serve_manifest():
-    return FileResponse(os.path.join(".well-known", "ai-plugin.json"))
-from fastapi.responses import FileResponse
-import os
-
-@app.get("/.well-known/ai-plugin.json", include_in_schema=False)
-def serve_manifest():
-    return FileResponse(os.path.join(".well-known", "ai-plugin.json"))
-from fastapi.responses import FileResponse
-import os
-
-@app.get("/.well-known/ai-plugin.json", include_in_schema=False)
-def serve_manifest():
-    return FileResponse(os.path.join(".well-known", "ai-plugin.json"))
-
+# Montar la carpeta .well-known para servir ai-plugin.json
+os.makedirs(".well-known", exist_ok=True)
+app.mount("/.well-known", StaticFiles(directory=".well-known"), name="static")
 from fastapi.staticfiles import StaticFiles
 import os
 
 # Asegúrate de que el directorio exista
 os.makedirs(".well-known", exist_ok=True)
 
-# Montar la carpeta .well-known
+# Montar la carpeta .well-known como estática
 app.mount("/.well-known", StaticFiles(directory=".well-known"), name="static")
-
